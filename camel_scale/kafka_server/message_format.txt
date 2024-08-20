@@ -1,0 +1,13 @@
+{
+  "id": "message123",
+  "timestamp": "2023-10-05T14:48:00Z",
+  "type": "text_analysis",
+  "content": {
+    "text": "Hello, how can I assist you today?",
+    "language": "en"
+  },
+  "metadata": {
+    "client_id": "client789",
+    "priority": "high"
+  }
+}
