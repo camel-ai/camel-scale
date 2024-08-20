@@ -1,0 +1,36 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "camel-scale"
+version = "0.0.1"
+authors = ["CAMEL-AI.org"]
+description = "An auto-scalable message queue system for agent communication and LLM backend load balancing for large-scale multi-agent systems."
+readme = "README.md"
+keywords = [
+    "auto-scaling",
+    "message queue",
+    "load balancing",
+    "multi-agent systems",
+    "agent communication",
+    "large-language-models",
+    "natural-language-processing",
+    "artificial-intelligence",
+]
+packages = [
+    { include = "camel-scale" },
+]
+
+license = "Apache License 2.0"
+homepage = "https://www.camel-ai.org/"
+repository = "https://github.com/camel-ai/camel"
+documentation = "https://docs.camel-ai.org"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+# test
+
+[tool.poetry.dev-dependencies]
+pre-commit = "3.8.0"
+pytest = "8.3.2"
