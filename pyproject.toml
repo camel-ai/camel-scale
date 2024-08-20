@@ -32,6 +32,7 @@ python = "^3.9"
 
 # kafaka
 confluent-kafka = "2.5.0"
+kafka-python = "2.0.2"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "3.8.0"
