@@ -10,7 +10,7 @@ repos:
     hooks:
       - id: mypy
         name: Check mypy
-        entry: mypy --namespace-packages -p camel-scale -p test
+        entry: mypy --namespace-packages -p camel_scale -p test
         language: system
         types: [python]
         pass_filenames: false

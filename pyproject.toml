@@ -19,7 +19,7 @@ keywords = [
     "artificial-intelligence",
 ]
 packages = [
-    { include = "camel-scale" },
+    { include = "camel_scale" },
 ]
 
 license = "Apache License 2.0"
@@ -28,8 +28,10 @@ repository = "https://github.com/camel-ai/camel"
 documentation = "https://docs.camel-ai.org"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-# test
+python = "^3.9"
+
+# kafaka
+confluent-kafka = "2.5.0"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "3.8.0"
