@@ -12,21 +12,3 @@
 # limitations under the License.
 # =========== Copyright 2023 @ CAMEL-AI.org. All Rights Reserved. ===========
 
-from confluent_kafka import Producer
-
-
-def kafka_producer(brokers, topic):
-    config = {"bootstrap.servers": brokers}
-    producer = Producer(**config)
-
-    def send_message(message):
-        def acked(err, msg):
-            if err is not None:
-                print(f"Failed to deliver message: {err.str()}")
-            else:
-                print(f"Message sent: {msg.topic()} {msg.partition()} {msg.offset()}")
-
-        producer.produce(topic, message.encode("utf-8"), callback=acked)
-        producer.flush()
-
-    return send_message
