@@ -12,3 +12,8 @@
 # limitations under the License.
 # =========== Copyright 2023 @ CAMEL-AI.org. All Rights Reserved. ===========
 
+from .producer import kafka_producer
+
+__all__ = [
+    "kafka_producer",
+]
