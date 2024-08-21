@@ -12,21 +12,70 @@
 # limitations under the License.
 # =========== Copyright 2023 @ CAMEL-AI.org. All Rights Reserved. ===========
 
-from confluent_kafka import Producer  # type: ignore[import]
+import json
+
+from confluent_kafka import Producer as ConfluentProducer  # type: ignore[import]
 
 
-def kafka_producer(brokers, topic):
-    config = {"bootstrap.servers": brokers}
-    producer = Producer(**config)
+class Producer:
+    r"""Kafka producer model using confluent_kafka"""
 
-    def send_message(message):
-        def acked(err, msg):
-            if err is not None:
-                print(f"Failed to deliver message: {err.str()}")
-            else:
-                print(f"Message sent: {msg.topic()} {msg.partition()} {msg.offset()}")
+    def __init__(
+        self, bootstrap_servers="localhost:9092", topic="default_topic", **kwargs
+    ):
+        r"""Initialize Confluent Kafka producer.
 
-        producer.produce(topic, message.encode("utf-8"), callback=acked)
-        producer.flush()
+        Args:
+            bootstrap_servers (str): Kafka broker(s) (default: :obj:`"localhost:9092"`).
+            topic (str): Default topic to produce to (default: :obj:`"default_topic"`).
+            **kwargs: Additional configuration parameters for confluent_kafka.Producer.
+        """
+        self.topic = topic
+        config = {
+            "bootstrap.servers": bootstrap_servers,
+            "client.id": "python-producer",
+        }
+        config.update(kwargs)
+        self.producer = ConfluentProducer(config)
 
-    return send_message
+    def delivery_report(self, err, msg):
+        r"""Delivery report handler for produced messages.
+
+        Args:
+            err (confluent_kafka.KafkaError): Delivery error (if any)
+            msg (confluent_kafka.Message): Delivered message
+        """
+        if err is not None:
+            print(f"Message delivery failed: {err}")
+        else:
+            print(f"Message delivered to {msg.topic()} [{msg.partition()}]")
+
+    def produce(self, value, key=None, topic=None):
+        r"""Produce a message to Kafka.
+
+        Args:
+            value: The message value that will be serialized to JSON format.
+            key: Optional message key (default: :obj:`None`).
+            topic: Optional topic override (default: :obj:`None`).
+        """
+        if topic is None:
+            topic = self.topic
+
+        try:
+            value_json = json.dumps(value)
+        except TypeError:
+            raise ValueError("Value must be JSON serializable")
+
+        self.producer.produce(
+            topic, key=key, value=value_json, callback=self.delivery_report
+        )
+        # Serve delivery callback queue
+        self.producer.poll(0)
+
+    def flush(self):
+        r"""Wait for any outstanding messages to be delivered."""
+        self.producer.flush()
+
+    def close(self):
+        """Close the producer"""
+        self.producer.flush()  # Make sure all outstanding messages are sent
