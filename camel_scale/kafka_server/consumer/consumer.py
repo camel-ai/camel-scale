@@ -59,7 +59,7 @@ class Consumer:
         r"""Consume messages from subscribed topics.
 
         Args:
-            timeout (float, optional): The maximum time to block waiting for a message (default: :obj:`1.0`).
+            timeout (float, optional): The maximum time to block waiting for a message. (default: :obj:`1.0`)
 
         Returns:
             dict: Deserialized message value, or None if no message was available.
