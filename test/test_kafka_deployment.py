@@ -15,6 +15,8 @@
 import pytest
 from kafka import KafkaConsumer, KafkaProducer  # type: ignore[import]
 
+# Note: before running this test, make sure that Kafka and Zookeeper are running
+
 # Kafka configuration
 KAFKA_BROKER_URL = "localhost:9092"  # default Kafka broker URL
 TEST_TOPIC = "test-topic"
@@ -22,7 +24,7 @@ TEST_TOPIC = "test-topic"
 
 @pytest.fixture(scope="module")
 def producer():
-    r"""Fixture to create a Kafka producer"""
+    r"""Fixture to create a Kafka producer."""
     _producer = KafkaProducer(bootstrap_servers=[KAFKA_BROKER_URL])
     yield _producer
     _producer.close()
@@ -30,7 +32,7 @@ def producer():
 
 @pytest.fixture(scope="module")
 def consumer():
-    r"""Fixture to create a Kafka consumer"""
+    r"""Fixture to create a Kafka consumer."""
     _consumer = KafkaConsumer(
         TEST_TOPIC,
         bootstrap_servers=[KAFKA_BROKER_URL],
@@ -42,7 +44,7 @@ def consumer():
 
 
 def test_send_receive_message(producer, consumer):
-    r"""Test to send and then receive a message from Kafka"""
+    r"""Test to send and then receive a message from Kafka."""
     message = b"Hello World"  # message to send
     producer.send(TEST_TOPIC, message)
     producer.flush()  # make sure the message has been sent
@@ -52,4 +54,4 @@ def test_send_receive_message(producer, consumer):
         assert msg.value == message
         break
     else:
-        pytest.fail("Message was not received by the consumer")
+        raise AssertionError("Message was not consumed")
