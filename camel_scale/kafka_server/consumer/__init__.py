@@ -12,8 +12,9 @@
 # limitations under the License.
 # =========== Copyright 2023 @ CAMEL-AI.org. All Rights Reserved. ===========
 
-from .consumer import Consumer
+from .consumer import ConfluentConsumer, Consumer
 
 __all__ = [
     "Consumer",
+    "ConfluentConsumer",
 ]

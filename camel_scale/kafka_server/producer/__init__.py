@@ -12,8 +12,9 @@
 # limitations under the License.
 # =========== Copyright 2023 @ CAMEL-AI.org. All Rights Reserved. ===========
 
-from .producer import Producer
+from .producer import ConfluentProducer, Producer
 
 __all__ = [
     "Producer",
+    "ConfluentProducer",
 ]
