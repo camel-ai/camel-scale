@@ -1,1 +1,0 @@
-KAFKA_HOME=D:\Applications\Kafka\kafka_2.13-3.8.0\kafka_2.13-3.8.0

@@ -1,29 +1,25 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal
 
-:: Load configuration
-for /f "tokens=1,2 delims==" %%a in (kafka_config.txt) do (
-    set %%a=%%b
+REM Read paths from the configuration file
+for /F "tokens=1,* delims==" %%i in (server_home_path.txt) do (
+    if "%%i"=="KAFKA_HOME" set KAFKA_HOME=%%j
 )
 
-:: Set Kafka and Zookeeper configuration paths
-set "ZOOKEEPER_CONFIG=%KAFKA_HOME%\config\zookeeper.properties"
-set "KAFKA_CONFIG=%KAFKA_HOME%\config\server.properties"
+REM Check if KAFKA_HOME is set properly
+if "%KAFKA_HOME%"=="" (
+    echo KAFKA_HOME is not set. Please check the server_home_path file.
+    exit /b 1
+)
 
-:: Start Zookeeper
-echo Starting Zookeeper...
-start "Zookeeper" cmd /c ""%KAFKA_HOME%\bin\windows\zookeeper-server-start.bat" "%ZOOKEEPER_CONFIG%""
+REM Check if the Kafka home directory exists
+if not exist "%KAFKA_HOME%" (
+    echo Kafka directory %KAFKA_HOME% does not exist. Please check the server_home_path file.
+    exit /b 1
+)
 
-:: Wait for Zookeeper to start
-timeout /t 10 /nobreak > nul
-
-:: Start Kafka
+REM Start the Kafka server with configuration file
 echo Starting Kafka...
-start "Kafka" cmd /c ""%KAFKA_HOME%\bin\windows\kafka-server-start.bat" "%KAFKA_CONFIG%""
-
-:: Wait for Kafka to start
-timeout /t 10 /nobreak > nul
-
-echo Kafka and Zookeeper have been started.
+call "%KAFKA_HOME%\bin\windows\kafka-server-start.bat" "%KAFKA_HOME%\config\server.properties"
 
 endlocal
