@@ -71,10 +71,11 @@ class Consumer:
 
         if msg.error():
             if msg.error().code() == KafkaError._PARTITION_EOF:
-                print(f"Reached end of partition: {msg.topic()} [{msg.partition()}]")
+                raise ValueError(
+                    f"Reached end of partition: {msg.topic()} [{msg.partition()}]"
+                )
             else:
                 raise KafkaError(msg.error())
-            return None
 
         try:
             value = json.loads(msg.value().decode("utf-8"))
