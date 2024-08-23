@@ -1,2 +1,2 @@
 KAFKA_HOME=D:/kafka
-ZOOKEEPER_HOME=D:/ooKeeper
+ZOOKEEPER_HOME=D:/zookeeper
