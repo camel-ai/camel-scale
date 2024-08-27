@@ -15,7 +15,7 @@ from camel_scale.kafka_server.consumer import Consumer
 from camel_scale.kafka_server.producer import Producer
 
 
-def run_kafka_example():
+def produce_messages():
     # Define the topic
     topic = "test_topic"
 
@@ -36,6 +36,11 @@ def run_kafka_example():
     producer.close()
     print("Producer closed.")
 
+
+def consume_messages():
+    # Define the topic
+    topic = "test_topic"
+
     # Create a consumer instance
     consumer = Consumer(bootstrap_servers="localhost:9092", group_id="example_group")
     consumer.subscribe([topic])
@@ -54,6 +59,12 @@ def run_kafka_example():
     finally:
         consumer.close()
         print("Consumer closed.")
+
+
+def run_kafka_example():
+    produce_messages()
+    print("================================")
+    consume_messages()
 
 
 if __name__ == "__main__":
